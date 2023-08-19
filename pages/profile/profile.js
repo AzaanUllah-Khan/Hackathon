@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-analytics.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+import { getAuth, onAuthStateChanged, signOut, updatePassword } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 import { getFirestore, collection, addDoc, doc, query, where, getDocs, serverTimestamp, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-storage.js";
 
@@ -115,4 +115,17 @@ onAuthStateChanged(auth, async (user) => {
     if (!user) {
         location.replace("../index.html")
     }
-  })
+})
+document.getElementById("upPass").addEventListener("click", () => {
+    const user = auth.currentUser;
+    const newPassword = document.getElementById("uP").value;
+    const password = document.getElementById("p").value;
+    if (password == newPassword) {
+        updatePassword(user, newPassword).then(() => {
+            console.log("done");
+        }).catch((error) => {
+
+            console.log(error);
+        });
+    }
+})
